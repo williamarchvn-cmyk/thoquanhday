@@ -2119,7 +2119,6 @@ function App() {
       <${SearchBar} workers=${data.workers.filter(w => w.active || ADMIN)} count=${filtered.length} filterCount=${fc}
         onWorker=${w => openWorker(w.id)} onPlace=${p => { setFound({ ...p, open: true }); flyTo([p.lat, p.lng], 15.5); }}
         listOpen=${listOpen} setListOpen=${setListOpen} filtersOpen=${filtersOpen} setFiltersOpen=${setFiltersOpen} />
-      <${TradeBar} trades=${trades} counts=${counts} f=${f} setF=${setF} />
       ${loadState === 'error' ? html`<div className="card-panel glass tile-warn" role="alert" style=${{ borderLeftColor: 'var(--bad)' }}><b>Chưa tải được dữ liệu</b><span className="small">${loadErr}</span><span className="inline"><button className="btn sm dark" onClick=${() => load()}>Thử lại</button>${CFG && CFG.fromBrowser ? html`<button className="btn sm ghost" onClick=${() => { try { localStorage.removeItem(CFG_LS); } catch (e) { } location.reload(); }}>Nhập lại URL, key</button>` : null}</span></div>` : null}
       ${tileWarn ? html`<div className="card-panel glass tile-warn" role="alert"><b>Chưa tải được bản đồ nền</b><span className="small">Kiểm tra kết nối mạng hoặc mở trang bằng Chrome, Safari. Các thợ vẫn hiện đúng vị trí.</span><span className="inline"><button className="btn sm dark" onClick=${() => { tried.current = new Set(); setTileWarn(false); setTileNonce(n => n + 1); }}>Thử tải lại</button><button className="btn sm ghost" onClick=${() => setTileWarn(false)}>Ẩn</button></span></div>` : null}
       ${filtersOpen ? html`<${FilterPanel} f=${f} setF=${setF} trades=${trades} hasMe=${!!me} onLocate=${locate} />` : null}
@@ -2153,7 +2152,6 @@ function App() {
     </div>
 
     ${!listOpen ? html`<button className="mobile-list-btn glass" onClick=${() => setListOpen(true)}><${Icon} n="list" /> ${filtered.length} thợ · Xem danh sách</button>` : null}
-    <div className="legend glass"><span><i style=${{ background: 'var(--ok)' }}></i>Đang nhận việc</span><span><i style=${{ background: 'var(--muted)' }}></i>Bận, tạm nghỉ</span><span className="muted">· Vị trí gần đúng, không phải nhà thợ</span></div>
 
     ${pick ? html`<div className="hint glass"><span>${pick.kind === 'new' ? 'Chạm vào bản đồ tại khu vực của thợ mới' : pick.kind === 'me' ? 'Chạm vào bản đồ tại vị trí của bạn' : 'Chạm vào bản đồ tại khu vực nhận việc'}</span><button onClick=${() => { if (pick.kind === 'worker') setForm(d => d && ({ ...d, _hidden: false })); if (pick.kind === 'reg') setReg(d => d && ({ ...d, _hidden: false })); setPick(null); }}>Hủy</button></div>` : null}
 
